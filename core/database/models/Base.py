@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Integer, DateTime
+from sqlalchemy import Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 
 
@@ -19,8 +19,8 @@ class Base(DeclarativeBase):
         Integer, primary_key=True, autoincrement=True
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow
+        DateTime, default=func.now()
     )
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+        DateTime, default=func.now(), onupdate=func.now()
     )
