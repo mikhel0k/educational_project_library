@@ -1,14 +1,8 @@
-from dotenv import load_dotenv
-import os
-
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from ..settings import get_db_url
 
-load_dotenv()
 
-ASYNC_DATABASE_URL = os.getenv(
-    "ASYNC_DATABASE_URL",
-    "postgresql+asyncpg://user:password@localhost:5432/fastapi_db"
-)
+ASYNC_DATABASE_URL = get_db_url()
 
 async_engine = create_async_engine(ASYNC_DATABASE_URL)
 
