@@ -4,7 +4,7 @@ from sqlalchemy import Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 
 
-class Base(DeclarativeBase):
+class BaseModel(DeclarativeBase):
     __abstract__ = True
 
     @declared_attr.directive
