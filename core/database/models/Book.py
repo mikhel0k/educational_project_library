@@ -17,7 +17,7 @@ class Book(BaseModel):
 
     def __str__(self):
         return (f"Title: {self.title} of {self.publication_year} year,"
-                f"Genre: {self.genre} ({self.average_rating:.2f}) ")
+                f"Genre: {self.genre}")
 
     def __repr__(self):
         return str(self)
