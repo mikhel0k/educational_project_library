@@ -10,11 +10,6 @@ class Book(BaseModel):
     publication_year: Mapped[int] = mapped_column(Integer, nullable=False)
     genre: Mapped[str] = mapped_column(String(128), nullable=False)
     language: Mapped[str] = mapped_column(String(128), nullable=False)
-    # average_rating: Mapped[float] = mapped_column(
-    #     Computed("COALESCE((SELECT AVG(rating) FROM reviews WHERE reviews.book_id = id), 0.0)",
-    #              persisted=True,
-    #              )
-    # )
 
     physical_books: Mapped[list["PhysicalBook"]] = relationship("PhysicalBook", back_populates="book")
     ebook: Mapped["Ebook | None"] = relationship("Ebook", back_populates="book", uselist=False)
