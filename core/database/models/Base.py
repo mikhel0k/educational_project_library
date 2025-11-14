@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 from sqlalchemy import Integer, DateTime, func
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
