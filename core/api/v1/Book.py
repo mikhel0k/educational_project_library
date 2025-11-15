@@ -1,8 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.crud import book_create, get_book_by_tittle
+
 from core.schemas import BookCreate, BookResponse
-from core import Book
 from core.database import get_db
 
 from fastapi import APIRouter, Depends
@@ -16,11 +17,11 @@ async def create_book(
         book: BookCreate,
         session: AsyncSession = Depends(get_db)
 ):
-    db_book = Book(**book.model_dump())
-    session.add(db_book)
-    await session.commit()
-    await session.refresh(db_book)
-    return db_book
+    book = await book_create(
+        book=book,
+        session=session
+    )
+    return book
 
 
 @router.get('/{title}/', response_model=list[BookResponse])
@@ -28,6 +29,4 @@ async def get_book(
         title: str,
         session: AsyncSession = Depends(get_db)
 ):
-    std = select(Book).where(Book.title == title)
-    asnw = await session.execute(std)
-    return asnw.scalars().all()
+    return await get_book_by_tittle(title, session)
