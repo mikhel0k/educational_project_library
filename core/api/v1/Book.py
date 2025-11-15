@@ -5,8 +5,8 @@ from core.schemas import BookCreate, BookResponse
 from core import Book
 from core.database import get_db
 
-
 from fastapi import APIRouter, Depends
+
 
 router = APIRouter(prefix='/book', tags=['books'])
 
