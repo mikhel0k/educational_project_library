@@ -1,7 +1,9 @@
 from .models import BaseModel, Book
+from .db import get_db
 
 
 __all__ = [
     'BaseModel',
-    'Book'
+    'Book',
+    'get_db'
 ]
