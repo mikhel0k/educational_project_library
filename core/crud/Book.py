@@ -17,10 +17,19 @@ async def book_create(
     return db_book
 
 
-async def get_book_by_tittle(
+async def get_book_by_title(
         title: str,
         session: AsyncSession
 ):
     std = select(Book).where(Book.title == title)
     asnw = await session.execute(std)
     return asnw.scalars().all()
+
+
+async def delete_book_by_id(
+        book_id: int,
+        session: AsyncSession
+):
+    book = await session.get(Book, book_id)
+    await session.delete(book)
+    await session.commit()
