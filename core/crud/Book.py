@@ -39,7 +39,7 @@ async def get_book_by_title(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Book not found"
         )
-    return answ.scalars().all()
+    return books
 
 
 async def delete_book_by_id(
@@ -47,5 +47,10 @@ async def delete_book_by_id(
         session: AsyncSession
 ):
     book = await session.get(Book, book_id)
+    if book is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found"
+        )
     await session.delete(book)
     await session.commit()
