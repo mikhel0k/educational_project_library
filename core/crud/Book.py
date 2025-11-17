@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +23,14 @@ async def get_book_by_title(
         session: AsyncSession
 ):
     std = select(Book).where(Book.title == title)
-    asnw = await session.execute(std)
-    return asnw.scalars().all()
+    answ = await session.execute(std)
+    books = answ.scalars().all()
+    if not books:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found"
+        )
+    return answ.scalars().all()
 
 
 async def delete_book_by_id(
