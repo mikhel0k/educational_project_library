@@ -11,6 +11,15 @@ async def book_create(
         book: BookCreate,
         session: AsyncSession,
 ):
+    std = select(Book).where(Book.isbn == book.isbn)
+    answ = await session.execute(std)
+    books = answ.scalars().all()
+    if books:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Book is already registered"
+        )
+
     db_book = Book(**book.model_dump())
     session.add(db_book)
     await session.commit()
