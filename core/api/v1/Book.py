@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.crud import book_create, get_book_by_title, delete_book_by_id, get_book_paginated
+from core.crud import book_create, get_book_by_title, delete_book_by_id, get_book_paginated, get_book_by_isbn
 
 from core.schemas import BookCreate, BookResponse
 from core.database import get_db
@@ -23,12 +23,20 @@ async def create_book(
     return book
 
 
-@router.get('/{title}/', response_model=list[BookResponse])
+@router.get('/title/{title}/', response_model=list[BookResponse])
 async def get_book(
         title: str,
         session: AsyncSession = Depends(get_db)
 ):
     return await get_book_by_title(title, session)
+
+
+@router.get('/isbn/{isbn}/', response_model=list[BookResponse])
+async def get_book(
+        title: str,
+        session: AsyncSession = Depends(get_db)
+):
+    return await get_book_by_isbn(title, session)
 
 
 @router.delete('/{book_id}')

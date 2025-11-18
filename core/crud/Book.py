@@ -56,6 +56,21 @@ async def delete_book_by_id(
     await session.commit()
 
 
+async def get_book_by_isbn(
+        isbn: str,
+        session: AsyncSession
+):
+    std = select(Book).where(Book.isbn == isbn)
+    answ = await session.execute(std)
+    books = answ.scalars().all()
+    if not books:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Book not found"
+        )
+    return books
+
+
 async def get_book_paginated(
         session: AsyncSession,
         skip: int,
