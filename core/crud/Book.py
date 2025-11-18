@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import Book
@@ -54,3 +54,25 @@ async def delete_book_by_id(
         )
     await session.delete(book)
     await session.commit()
+
+
+async def get_book_paginated(
+        session: AsyncSession,
+        skip: int,
+        limit: int,
+):
+    count_stmt = select(func.count(Book.id))
+    total_result = await session.execute(count_stmt)
+    total_count = total_result.scalar()
+
+    stmt = select(Book).offset(skip).limit(limit)
+    result = await session.execute(stmt)
+    books = result.scalars().all()
+
+    return {
+        "items": books,
+        "total": total_count,
+        "skip": skip,
+        "limit": limit,
+        "has_more": skip+limit < total_count,
+    }
