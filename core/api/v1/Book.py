@@ -14,7 +14,7 @@ router = APIRouter(prefix='/book', tags=['books'])
 
 
 @router.get('/get_by_title/{title}', response_model=list[BookResponse])
-async def get_book_by_title(
+async def get_book_title(
         title: str,
         session: AsyncSession = Depends(get_db)
 ):
@@ -22,7 +22,7 @@ async def get_book_by_title(
 
 
 @router.get('/get_by_isbn/{isbn}', response_model=list[BookResponse])
-async def get_book_by_isbn(
+async def get_book_isbn(
         isbn: str,
         session: AsyncSession = Depends(get_db)
 ):

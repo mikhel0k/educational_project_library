@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import Book
-from core.schemas import BookCreate
+from core.schemas import BookCreate, BookResponse
 
 
 async def book_create(
@@ -110,9 +110,10 @@ async def get_book_paginated(
         stmt = select(Book).offset(skip).limit(limit)
         result = await session.execute(stmt)
         books = result.scalars().all()
+        books_schemas = [BookResponse.model_validate(book) for book in books]
 
         return {
-            "items": books,
+            "items": books_schemas,
             "total": total_count,
             "skip": skip,
             "limit": limit,

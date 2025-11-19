@@ -37,7 +37,7 @@ async def author_create(
     return author
 
 
-@router.put("/{author_id}", response_model=AuthorResponse)
+@router.patch("/{author_id}", response_model=AuthorResponse)
 async def author_update(
         author_id: int,
         author: AuthorUpdate,

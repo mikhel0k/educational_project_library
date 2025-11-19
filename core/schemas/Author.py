@@ -15,10 +15,10 @@ class AuthorCreate(BaseSchema):
 
 
 class AuthorUpdate(BaseModel):
-    first_name: str | None = Field(..., description="First Name")
-    second_name: str | None = Field(..., description="Second Name")
-    birth_date: datetime | None = Field(..., description="Birthday date")
-    bio: str | None = Field(..., description="Bio of author")
+    first_name: str | None = Field(None, description="First Name")
+    second_name: str | None = Field(None, description="Second Name")
+    birth_date: datetime | None = Field(None, description="Birthday date")
+    bio: str | None = Field(None, description="Bio of author")
 
 
 class AuthorResponse(BaseSchema):
