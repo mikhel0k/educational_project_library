@@ -4,7 +4,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import Book
-from core.database import get_db
 from core.schemas import BookCreate
 
 
