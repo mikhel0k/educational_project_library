@@ -28,7 +28,7 @@ async def author_get_by_name(
     return author
 
 
-@router.post("/", response_model=AuthorResponse)
+@router.post("/", response_model=AuthorResponse, status_code=status.HTTP_201_CREATED)
 async def author_create(
         author: AuthorCreate,
         session: AsyncSession = Depends(get_db)
