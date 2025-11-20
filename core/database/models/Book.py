@@ -15,4 +15,4 @@ class Book(BaseModel):
 
     author_id: Mapped[int] = mapped_column(ForeignKey('authors.id'), nullable=False)
 
-    author: Mapped["Author"] = relationship("Author", back_populates="books")
+    author: Mapped["Author"] = relationship("Author", back_populates="books", lazy="joined")

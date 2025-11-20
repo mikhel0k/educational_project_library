@@ -2,6 +2,8 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, Field, ConfigDict
 
+from .Author import AuthorResponse
+
 
 class BookBase(BaseModel):
     title: str = Field(
@@ -21,6 +23,10 @@ class BookBase(BaseModel):
         ...,
         description="year of the book publication",
     )
+    author_id: int = Field(
+        ...,
+        description="author_id of the book"
+    )
 
 
 class BookCreate(BookBase):
@@ -33,3 +39,4 @@ class BookResponse(BookBase):
     id: int
     created_at: datetime
     updated_at: datetime
+    author: AuthorResponse
