@@ -48,10 +48,10 @@ async def get_book_by_title(
                 detail="Book not found"
             )
         return books
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get book due to database error"
+            detail=str(e)
         )
 
 
@@ -68,11 +68,10 @@ async def delete_book_by_id(
             )
         await session.delete(book)
         await session.commit()
-    except SQLAlchemyError:
-        await session.rollback()
+    except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to delete book due to database error"
+            detail=str(e)
         )
 
 
@@ -90,10 +89,10 @@ async def get_book_by_isbn(
                 detail="Book not found"
             )
         return books
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get book due to database error"
+            detail=str(e)
         )
 
 
@@ -119,8 +118,8 @@ async def get_book_paginated(
             "limit": limit,
             "has_more": skip+limit < total_count,
         }
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get books due to database error"
+            detail=str(e)
         )
