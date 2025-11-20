@@ -10,20 +10,20 @@ from core import Review
 router = APIRouter(prefix="/review", tags=["reviews"])
 
 
-@router.get("/id/{review_id}", response_model=ReviewResponse)  # Изменил путь
-async def get_review_by_id(  # Переименовал функцию
+@router.get("/id/{review_id}", response_model=ReviewResponse)
+async def get_review_by_id(
         review_id: int,
         session: AsyncSession = Depends(get_db)
-):
+) -> ReviewResponse:
     review = await get_review(review_id, session)
     return review
 
 
-@router.post("/", response_model=ReviewResponse)
+@router.post("/", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
 async def post_review(
         created_review: CreateReview,
         session: AsyncSession = Depends(get_db)
-):
+) -> ReviewResponse:
     review = await create_review(created_review, session)
     return review
 
@@ -34,7 +34,7 @@ async def get_reviews_for_book(
         skip: int = Query(0, ge=0),
         limit: int = Query(30, ge=0, le=100),
         session: AsyncSession = Depends(get_db)
-):
+) -> list[ReviewResponse]:
     reviews = await get_review_by_book(book_id, skip, limit, session)
     return reviews
 

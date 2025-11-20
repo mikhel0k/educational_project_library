@@ -14,7 +14,7 @@ router = APIRouter(prefix="/authors", tags=["authors"])
 async def author_get_by_id(
         author_id: int,
         session: AsyncSession = Depends(get_db)
-):
+) -> AuthorResponse:
     author = await get_author_by_id(author_id, session)
     return author
 
@@ -23,7 +23,7 @@ async def author_get_by_id(
 async def author_get_by_name(
         author_name: str,
         session: AsyncSession = Depends(get_db)
-):
+) -> list[AuthorResponse]:
     author = await get_authors_by_name(author_name, session)
     return author
 
@@ -32,7 +32,7 @@ async def author_get_by_name(
 async def author_create(
         author: AuthorCreate,
         session: AsyncSession = Depends(get_db)
-):
+) -> AuthorResponse:
     author = await create_author(author, session)
     return author
 
@@ -42,7 +42,7 @@ async def author_update(
         author_id: int,
         author: AuthorUpdate,
         session: AsyncSession = Depends(get_db)
-):
+) -> AuthorResponse:
     author = await update_author(author_id, author, session)
     return author
 
@@ -51,6 +51,6 @@ async def author_update(
 async def author_delete(
         author_id: int,
         session: AsyncSession = Depends(get_db)
-):
+) -> AuthorResponse:
     author = await delete_author(author_id, session)
     return author

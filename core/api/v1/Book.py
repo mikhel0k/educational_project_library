@@ -8,7 +8,7 @@ from core.crud import book_create, get_book_by_title, delete_book_by_id, get_boo
 from core.schemas import BookCreate, BookResponse
 from core.database import get_db
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException, status
 
 router = APIRouter(prefix='/book', tags=['books'])
 
@@ -17,7 +17,7 @@ router = APIRouter(prefix='/book', tags=['books'])
 async def get_book_title(
         title: str,
         session: AsyncSession = Depends(get_db)
-):
+) -> list[BookResponse]:
     return await get_book_by_title(title, session)
 
 
@@ -25,7 +25,7 @@ async def get_book_title(
 async def get_book_isbn(
         isbn: str,
         session: AsyncSession = Depends(get_db)
-):
+) -> list[BookResponse]:
     return await get_book_by_isbn(isbn, session)
 
 
@@ -34,15 +34,15 @@ async def get_books(
         skip: int = Query(0, ge=0, description="Number of books to skip"),
         limit: int = Query(30, ge=0, le=100, description="Number of books to return"),
         session: AsyncSession = Depends(get_db)
-):
+) -> Dict[str, Any]:
     return await get_book_paginated(session, skip, limit)
 
 
-@router.post('/create', response_model=BookResponse, status_code=201)
+@router.post('/create', response_model=BookResponse, status_code=status.HTTP_201_CREATED)
 async def create_book(
         book: BookCreate,
         session: AsyncSession = Depends(get_db)
-):
+) -> BookResponse:
     book = await book_create(
         book=book,
         session=session
