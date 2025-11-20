@@ -42,7 +42,6 @@ class BookResponse(BookBase):
     created_at: datetime
     updated_at: datetime
     author: AuthorResponse
-    reviews: List[ReviewResponse]
 
 
 class BookMinimal(BaseModel):

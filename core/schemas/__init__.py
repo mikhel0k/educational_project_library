@@ -1,5 +1,6 @@
 from .Book import BookCreate, BookResponse
 from .Author import AuthorCreate, AuthorUpdate, AuthorResponse
+from .Review import ReviewResponse, CreateReview
 
 
 __all__ = [
@@ -7,5 +8,7 @@ __all__ = [
     'BookResponse',
     'AuthorCreate',
     'AuthorUpdate',
-    'AuthorResponse'
+    'AuthorResponse',
+    'ReviewResponse',
+    'CreateReview',
 ]

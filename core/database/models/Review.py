@@ -12,4 +12,4 @@ class Review(BaseModel):
     review_text: Mapped[str] = mapped_column(Text, nullable=False)
     book_id: Mapped[int] = mapped_column(Integer, ForeignKey('books.id'), nullable=False)
 
-    book: Mapped["Book"] = relationship("Book", back_populates="reviews")
+    book: Mapped["Book"] = relationship("Book", back_populates="reviews", lazy="joined")
