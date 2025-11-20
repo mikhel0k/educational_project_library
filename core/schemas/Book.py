@@ -1,8 +1,10 @@
 from datetime import date, datetime
+from typing import List
 
 from pydantic import BaseModel, Field, ConfigDict
 
 from .Author import AuthorResponse
+from .Review import ReviewResponse
 
 
 class BookBase(BaseModel):
@@ -40,3 +42,4 @@ class BookResponse(BookBase):
     created_at: datetime
     updated_at: datetime
     author: AuthorResponse
+    reviews: List[ReviewResponse]
