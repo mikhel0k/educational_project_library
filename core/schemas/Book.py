@@ -43,3 +43,10 @@ class BookResponse(BookBase):
     updated_at: datetime
     author: AuthorResponse
     reviews: List[ReviewResponse]
+
+
+class BookMinimal(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    title: str
+    isbn: str

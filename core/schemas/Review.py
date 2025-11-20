@@ -3,12 +3,13 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from .Book import BookMinimal
+
 
 class BaseSchema(BaseModel):
     user_name: str
     title: Optional[str] = None
     review_text: str
-    book_id: int
 
 
 class CreateReview(BaseSchema):
@@ -21,3 +22,4 @@ class ReviewResponse(BaseSchema):
     id: int
     created_at: datetime
     updated_at: datetime
+    book: BookMinimal
