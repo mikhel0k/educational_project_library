@@ -13,7 +13,7 @@ class BaseSchema(BaseModel):
 
 
 class CreateReview(BaseSchema):
-    pass
+    book_id: int
 
 
 class ReviewResponse(BaseSchema):

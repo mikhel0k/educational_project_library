@@ -4,7 +4,6 @@ from typing import List
 from pydantic import BaseModel, Field, ConfigDict
 
 from .Author import AuthorResponse
-from .Review import ReviewResponse
 
 
 class BookBase(BaseModel):
