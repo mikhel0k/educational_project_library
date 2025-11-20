@@ -12,7 +12,7 @@ class Book(BaseModel):
     title: Mapped[str] = mapped_column(String(128), nullable=False)
     isbn: Mapped[str] = mapped_column(String(17), nullable=False)
     publication_year: Mapped[date] = mapped_column(Date, nullable=False)
-
     author_id: Mapped[int] = mapped_column(ForeignKey('authors.id'), nullable=False)
 
     author: Mapped["Author"] = relationship("Author", back_populates="books", lazy="joined")
+    reviews: Mapped[list["Review"]] = relationship("Review", back_populates="book", lazy="select")
