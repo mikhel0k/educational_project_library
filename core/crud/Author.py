@@ -7,38 +7,7 @@ from core.schemas import AuthorCreate, AuthorUpdate, AuthorResponse
 from core import Author
 
 
-async def create_author(
-        author_create: AuthorCreate,
-        session: AsyncSession
-) -> AuthorResponse:
-    try:
-        stmt = select(Author).where(
-            Author.first_name == author_create.first_name,
-            Author.second_name == author_create.second_name,
-        )
-        found_author = await session.execute(stmt)
-
-        if found_author.scalar_one_or_none():
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT, detail="Author is allready registred")
-
-        author = Author(**author_create.model_dump())
-        session.add(author)
-
-        await session.commit()
-        await session.refresh(author)
-
-        return AuthorResponse.model_validate(author)
-
-    except SQLAlchemyError as e:
-        await session.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e)
-        )
-
-
-async def get_author_by_id(
+async def read_author_by_id(
         author_id: int,
         session: AsyncSession,
 ) -> AuthorResponse:
@@ -57,7 +26,7 @@ async def get_author_by_id(
         )
 
 
-async def get_authors_by_name(
+async def read_authors_by_name(
         author_name: str,
         session: AsyncSession,
 ) -> list[AuthorResponse]:
@@ -73,6 +42,38 @@ async def get_authors_by_name(
         )
 
 
+async def create_author(
+        author: AuthorCreate,
+        session: AsyncSession
+) -> AuthorResponse:
+    try:
+        stmt = select(Author).where(
+            Author.first_name == author.first_name,
+            Author.second_name == author.second_name,
+        )
+        answ = await session.execute(stmt)
+
+        if answ.scalar_one_or_none():
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Author is already registered"
+            )
+
+        db_author = Author(**author.model_dump())
+        session.add(db_author)
+
+        await session.commit()
+        await session.refresh(db_author)
+        return AuthorResponse.model_validate(db_author)
+
+    except SQLAlchemyError as e:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
 async def update_author(
         author_id: int,
         author_update: AuthorUpdate,
@@ -80,7 +81,6 @@ async def update_author(
 ) -> AuthorResponse:
     try:
         author = await session.get(Author, author_id)
-
         if not author:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -94,6 +94,7 @@ async def update_author(
         await session.commit()
         await session.refresh(author)
         return AuthorResponse.model_validate(author)
+
     except SQLAlchemyError as e:
         await session.rollback()
         raise HTTPException(
@@ -116,6 +117,7 @@ async def delete_author(
 
         await session.delete(author)
         await session.commit()
+
     except SQLAlchemyError as e:
         await session.rollback()
         raise HTTPException(
