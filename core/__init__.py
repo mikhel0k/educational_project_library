@@ -1,4 +1,4 @@
-from .database import BaseModel, Book, Author, Review
+from .database import BaseModel, Book, Author, Review, User
 from .settings import get_db_url
 from .api import router as v1_router
 
@@ -9,5 +9,6 @@ __all__ = [
     'Book',
     'Author',
     'v1_router',
-    'Review'
+    'Review',
+    'User'
 ]
