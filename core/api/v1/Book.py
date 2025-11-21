@@ -36,7 +36,7 @@ async def get_books(
 
 
 @router.post("/", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
-async def create_book(
+async def post_book(
     book: BookCreate,
     session: AsyncSession = Depends(get_db)
 ) -> BookResponse:
@@ -44,7 +44,7 @@ async def create_book(
 
 
 @router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(
+async def delete_book_by_id(
     book_id: int,
     session: AsyncSession = Depends(get_db)
 ):

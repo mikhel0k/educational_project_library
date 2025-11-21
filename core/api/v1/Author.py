@@ -26,7 +26,7 @@ async def search_authors(
 
 
 @router.post("/", response_model=AuthorResponse, status_code=status.HTTP_201_CREATED)
-async def create_author(
+async def post_author(
     author: AuthorCreate,
     session: AsyncSession = Depends(get_db)
 ) -> AuthorResponse:
@@ -34,7 +34,7 @@ async def create_author(
 
 
 @router.patch("/{author_id}", response_model=AuthorResponse)
-async def update_author(
+async def patch_author(
     author_id: int,
     author: AuthorUpdate,
     session: AsyncSession = Depends(get_db)
@@ -43,7 +43,7 @@ async def update_author(
 
 
 @router.delete("/{author_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_author(
+async def delete_author_by_id(
     author_id: int,
     session: AsyncSession = Depends(get_db)
 ):

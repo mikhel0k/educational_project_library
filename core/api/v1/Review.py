@@ -29,7 +29,7 @@ async def get_book_reviews(
 
 
 @router.post("/", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
-async def create_review(
+async def post_review(
     review: CreateReview,
     session: AsyncSession = Depends(get_db)
 ) -> ReviewResponse:
@@ -37,7 +37,7 @@ async def create_review(
 
 
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_review(
+async def delete_review_by_id(
     review_id: int,
     session: AsyncSession = Depends(get_db)
 ):
