@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field, ConfigDict, validator
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 from .Author import AuthorResponse
 
@@ -28,7 +28,7 @@ class BookBase(BaseModel):
         description="author_id of the book"
     )
 
-    @validator("publication_year")
+    @field_validator("publication_year")
     def validate_publication_year(cls, v):
         if v > date.today().year:
             raise ValueError("Publication year cannot be in the future")
