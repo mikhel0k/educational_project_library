@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -8,7 +7,7 @@ from .Book import BookMinimal
 
 class BaseSchema(BaseModel):
     user_name: str
-    title: Optional[str] = None
+    title: str | None = None
     review_text: str
 
 
