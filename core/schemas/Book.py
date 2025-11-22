@@ -1,5 +1,4 @@
 from datetime import date, datetime
-
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 from .Author import AuthorResponse
