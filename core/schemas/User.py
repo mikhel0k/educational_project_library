@@ -15,7 +15,7 @@ class UpdateUser(BaseModel):
     email: EmailStr | None
 
 
-class UserResponce(BaseModel):
+class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     username: str
@@ -26,3 +26,17 @@ class UserResponce(BaseModel):
     id: int
     created_at: datetime
     updated_at: datetime
+
+
+class LoginUser(BaseModel):
+    username: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
