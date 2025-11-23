@@ -10,3 +10,7 @@ def get_password_hash(password):
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
+
+
+def login_for_access_token(access_token, password):
+    pass
