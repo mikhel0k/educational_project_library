@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     JWT_PRIVATE_KEY: Path = BASE_DIR / "pem_keys" / "jwt-private.pem"
     JWT_PUBLIC_KEY: Path = BASE_DIR / "pem_keys" / "jwt-public.pem"
     algorithm: str = "RS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 
 settings = Settings()
