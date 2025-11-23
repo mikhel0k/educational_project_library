@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
 load_dotenv()
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).parent.parent
 
 
 class Settings(BaseSettings):
@@ -17,9 +17,9 @@ class Settings(BaseSettings):
 
     JWT_PRIVATE_KEY: Path = BASE_DIR / "pem_keys" / "jwt-private.pem"
     JWT_PUBLIC_KEY: Path = BASE_DIR / "pem_keys" / "jwt-public.pem"
-    algorithm: str = "RS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30
-    REFRESH_TOKEN_EXPIRE_DAYS = 7
+    ALGORITHM: str = "RS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
 
 settings = Settings()

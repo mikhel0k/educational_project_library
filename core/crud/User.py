@@ -5,7 +5,19 @@ from starlette import status
 
 from core import User
 from core.schemas import UserResponse, UpdateUser, CreateUser, LoginUser, Token, TokenData
-from core.auth import get_password_hash, verify_password
+from passlib.context import CryptContext
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
 
 
 async def create_user(
