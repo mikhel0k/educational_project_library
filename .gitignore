@@ -43,5 +43,6 @@ Thumbs.db
 
 *.swp\
 *__pycache__/
+*.env
 
 *.pem
