@@ -30,11 +30,7 @@ async def get_current_user(
 ):
     user = await get_user_for_login(user_data, session)
 
-    token = create_access_token(
-        data={
-            "sub": user.username,
-        }
-    )
+    token = create_access_token(data={"sub": user.username,})
 
     response.set_cookie(
         key="access_token",
@@ -48,7 +44,6 @@ async def get_current_user(
     return "Logged in successfully"
 
 
-@router.get("/check", response_model=UserResponse)
 async def get_current_user_from_cookie(
         request: Request,
         session: AsyncSession = Depends(get_db)
@@ -57,10 +52,7 @@ async def get_current_user_from_cookie(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
     )
-
-    # Получаем токен из куки
     token = request.cookies.get("access_token")
-
     if not token:
         raise credentials_exception
 

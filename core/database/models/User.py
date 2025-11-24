@@ -1,5 +1,5 @@
 from pydantic import EmailStr
-from sqlalchemy import String
+from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .BaseModel import BaseModel
@@ -13,3 +13,7 @@ class User(BaseModel):
     second_name: Mapped[str | None] = mapped_column(String, nullable=True)
     email: Mapped[EmailStr] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
+
+    is_reader: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    is_author: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
