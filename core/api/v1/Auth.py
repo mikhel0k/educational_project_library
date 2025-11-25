@@ -1,12 +1,10 @@
-from fastapi import APIRouter, Depends, Response, Request, HTTPException, status
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core import User
 from core.database import get_db
 from core.schemas import UserResponse, CreateUser, LoginUser
 from core.crud import get_user_for_login, create_user
-from core.dependencies import create_access_token, decode_token
+from core.dependencies import create_access_token, get_current_user_from_cookie
 from core.settings import settings
 
 
@@ -30,7 +28,13 @@ async def get_current_user(
 ):
     user = await get_user_for_login(user_data, session)
 
-    token = create_access_token(data={"sub": user.username,})
+    token = create_access_token(data={
+        "sub": str(user.id),
+        "username": user.username,
+        "is_reader": user.is_reader,
+        "is_author": user.is_author,
+        "is_admin": user.is_admin,
+    })
 
     response.set_cookie(
         key="access_token",
@@ -44,33 +48,13 @@ async def get_current_user(
     return "Logged in successfully"
 
 
-async def get_current_user_from_cookie(
-        request: Request,
-        session: AsyncSession = Depends(get_db)
-) -> UserResponse:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-    )
-    token = request.cookies.get("access_token")
-    if not token:
-        raise credentials_exception
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="access_token", path="/")
+    return {"message": "Logged out successfully"}
 
-    try:
-        payload = decode_token(token)
-        username = payload.get("sub")
 
-        if username is None:
-            raise credentials_exception
+@router.get("/me", response_model=UserResponse)
+async def get_me(current_user: UserResponse = Depends(get_current_user_from_cookie)):
+    return current_user
 
-        stmt = select(User).where(User.username == username)
-        result = await session.execute(stmt)
-        user = result.scalar_one_or_none()
-
-        if user is None:
-            raise credentials_exception
-
-        return UserResponse.model_validate(user)
-
-    except Exception:
-        raise credentials_exception

@@ -24,6 +24,9 @@ class UserResponse(BaseModel):
     email: EmailStr
 
     id: int
+    is_reader: bool
+    is_author: bool
+    is_admin: bool
     created_at: datetime
     updated_at: datetime
 

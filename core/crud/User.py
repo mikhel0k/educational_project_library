@@ -19,7 +19,6 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-
 async def create_user(
         user_data: CreateUser,
         session: AsyncSession
