@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import User
 from core.database import get_db
-from core.schemas import UserResponse
+from core.schemas import TokenData
 
 
 def create_access_token(data: dict, expires_delta=None):
@@ -28,7 +28,7 @@ def decode_token(token: str):
 async def get_current_user_from_cookie(
         request: Request,
         session: AsyncSession = Depends(get_db)
-) -> UserResponse:
+) -> TokenData:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -44,39 +44,34 @@ async def get_current_user_from_cookie(
         if user_id is None:
             raise credentials_exception
 
-        user = await session.get(User, int(user_id))
-
-        if user is None:
-            raise credentials_exception
-
-        return UserResponse.model_validate(user)
+        return TokenData.model_validate(**payload)
 
     except Exception:
         raise credentials_exception
 
 
-async def get_current_reader(curent_user: User = Depends(get_current_user_from_cookie)):
-    if not curent_user.is_reader:
+async def get_current_reader(current_user: TokenData = Depends(get_current_user_from_cookie)):
+    if not current_user.is_reader:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to perform this operation"
         )
-    return curent_user
+    return current_user
 
 
-async def get_current_author(curent_user: User = Depends(get_current_user_from_cookie)):
-    if not curent_user.is_author:
+async def get_current_author(current_user: TokenData = Depends(get_current_user_from_cookie)):
+    if not current_user.is_author:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to perform this operation"
         )
-    return curent_user
+    return current_user
 
 
-async def get_current_admin(curent_user: User = Depends(get_current_user_from_cookie)):
-    if not curent_user.is_admin:
+async def get_current_admin(current_user: TokenData = Depends(get_current_user_from_cookie)):
+    if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have permission to perform this operation"
         )
-    return curent_user
+    return current_user

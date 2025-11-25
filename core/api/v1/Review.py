@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, Any
 
+from core import User
 from core.crud import create_review, delete_review, read_review_by_id, read_review_by_book
 from core.database import get_db
-from core.schemas import ReviewResponse, CreateReview
-
+from core.dependencies import get_current_reader, get_current_admin
+from core.schemas import ReviewResponse, CreateReview, TokenData
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 
@@ -31,6 +32,7 @@ async def get_book_reviews(
 @router.post("/", response_model=ReviewResponse, status_code=status.HTTP_201_CREATED)
 async def post_review(
     review: CreateReview,
+    user: TokenData = Depends(get_current_reader),
     session: AsyncSession = Depends(get_db)
 ) -> ReviewResponse:
     return await create_review(review, session)
@@ -39,6 +41,7 @@ async def post_review(
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_review_by_id(
     review_id: int,
+    user: TokenData = Depends(get_current_admin),
     session: AsyncSession = Depends(get_db)
 ):
     await delete_review(review_id, session)

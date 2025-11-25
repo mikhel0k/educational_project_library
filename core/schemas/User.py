@@ -42,4 +42,8 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    sub: int
+    username: str
+    is_reader: bool
+    is_author: bool
+    is_admin: bool
