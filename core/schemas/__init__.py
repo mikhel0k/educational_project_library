@@ -1,7 +1,7 @@
 from .Book import BookCreate, BookResponse
 from .Author import AuthorCreate, AuthorUpdate, AuthorResponse
 from .Review import ReviewResponse, CreateReview
-from .User import UserResponse, UpdateUser, LoginUser, CreateUser, Token, TokenData
+from .User import UserResponse, UpdateUser, LoginUser, CreateUser, Token, TokenData, RefreshToken
 
 __all__ = [
     'BookCreate',
@@ -16,5 +16,6 @@ __all__ = [
     'CreateUser',
     'UpdateUser',
     'Token',
-    'TokenData'
+    'TokenData',
+    'RefreshToken'
 ]
